@@ -8,9 +8,8 @@ import org.springframework.stereotype.Component;
 import com.elasticdemo.model.order.Order;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Component
 public class Util {
 

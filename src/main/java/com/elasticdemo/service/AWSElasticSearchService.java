@@ -55,8 +55,10 @@ public class AWSElasticSearchService {
 
     public void createSubmissionIndex() {
         List<Submission> subList = new ArrayList<Submission>();
-        Submission submission = RandomPoJoGenerator.getEntity(Submission.class);
-        subList.add(submission);
+        for (int i = 0; i < 100; i++) {
+            Submission submission = RandomPoJoGenerator.getObject(Submission.class);
+            subList.add(submission);
+        }
         buildIndexUsingBulkUpload(subList);
     }
 
