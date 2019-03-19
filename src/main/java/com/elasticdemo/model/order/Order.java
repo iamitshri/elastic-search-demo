@@ -1,4 +1,4 @@
-package com.elasticdemo.model;
+package com.elasticdemo.model.order;
 
 import java.util.Date;
 import lombok.AccessLevel;

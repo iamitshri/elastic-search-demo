@@ -1,4 +1,4 @@
-package com.elasticdemo.model;
+package com.elasticdemo.model.order;
 
 import lombok.AccessLevel;
 import lombok.Data;
