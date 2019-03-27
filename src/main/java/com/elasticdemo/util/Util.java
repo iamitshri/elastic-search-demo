@@ -1,30 +1,36 @@
 package com.elasticdemo.util;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.stereotype.Component;
-import com.elasticdemo.model.order.Order;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStreamReader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import com.elasticdemo.model.order.Orders;
+import com.elasticdemo.model.recipe.Recipes;
+import com.google.gson.Gson;
 
 
-@Component
+
 public class Util {
 
-    public static List<Order> getOrdersFromJsonFile() {
-        List<Order> orders = new ArrayList<Order>();
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Order>> typeReference = new TypeReference<List<Order>>() {};
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/data/orders-bulk.json");
-        try {
-            orders = mapper.readValue(inputStream, typeReference);
+    public static Orders getOrders() {
+        Gson gson = new Gson();
+        return gson.fromJson(getInputStreamReader("/data/orders.json"), Orders.class);
+    }
 
+    public static Recipes getRecipes() {
+        Gson gson = new Gson();
+        return gson.fromJson(getInputStreamReader("/data/recipes.json"), Recipes.class);
+    }
+
+    static InputStreamReader getInputStreamReader(String filePath) {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource jsonFile = resolver.getResource(filePath);
+        try {
+            return new InputStreamReader(jsonFile.getInputStream());
         } catch (IOException e) {
-            System.out.println("Unable to save users: " + e.getMessage());
+            e.printStackTrace();
         }
-        return orders;
+        return null;
 
     }
 

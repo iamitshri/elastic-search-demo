@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.Random;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import com.elasticdemo.model.submission.Submission;
 import com.elasticdemo.service.AWSElasticSearchService;
 import lombok.extern.slf4j.Slf4j;
 

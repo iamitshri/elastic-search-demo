@@ -9,12 +9,16 @@ import com.elasticdemo.service.AWSElasticSearchService;
 @Component
 public class AppRunner implements ApplicationRunner {
 
-    @Autowired AWSElasticSearchService service;
+    @Autowired
+    AWSElasticSearchService service;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        service.createSubmissionIndex();
-
+        service.createRecipeIndex();
+        
+        service.createOrdersIndex();
+        
+        service.createSubmissionIndex(100);
     }
 
 }

@@ -1,28 +1,38 @@
 package com.elasticdemo.model.order;
 
 import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-/*
- * 
- * 
- * {"purchased_at":"2016-03-08T16:18:37Z","lines":[{"product_id":7,"amount":31.44,"quantity":2},{
- * "product_id":4,"amount":74.82,"quantity":2}],
- * "total_amount":106.26,"salesman":{"id":79,"name":"Ulberto Woodruff"},"sales_channel":"store",
- * "status":"completed"}
- * 
- * 
- */
+
 @Data
-@FieldDefaults(level=AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Document(indexName = "orders")
 public class Order {
 
+    @Id
+    Long id;
+    
+    @Field(type = FieldType.Date)
     Date purchased_at;
+    
+    @Field(type = FieldType.Nested,includeInParent=true)
     ProductLine[] lines;
+    
+    @Field(type = FieldType.Double)
     Double total_amount;
+    
+    @Field(type = FieldType.Auto)
     SalesPerson salesman;
+    
+    @Field(type = FieldType.Auto)
     String sales_channel;
+    
+    @Field(type = FieldType.Keyword)
     String status;
 }

@@ -12,6 +12,9 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.elasticdemo.model.order.Order;
+import com.elasticdemo.model.order.Orders;
+import com.elasticdemo.model.recipe.RecipeElasticRepository;
+import com.elasticdemo.model.recipe.Recipes;
 import com.elasticdemo.model.submission.Submission;
 import com.elasticdemo.model.submission.SubmissionElasticRepository;
 import com.elasticdemo.util.RandomPoJoGenerator;
@@ -34,13 +37,21 @@ public class AWSElasticSearchService {
     @Autowired
     SubmissionElasticRepository submissionRepo;
 
+    @Autowired
+    RecipeElasticRepository recipeRepo;
 
-    public void bulkUpload() {
+
+
+    /**
+     * Example of using RestHighlevel Client to create index using bulk upload api
+     */
+    public void createOrdersIndex() {
         BulkRequest bulkRequest = new BulkRequest();
         try {
-            List<Order> orders = Util.getOrdersFromJsonFile();
+
+            Orders orders = Util.getOrders();
             int cnt = 0;
-            for (Order order : orders) {
+            for (Order order : orders.getOrders()) {
                 cnt++;
                 IndexRequest request = new IndexRequest("orders", "orders", "" + cnt);
                 request.source(mapper.convertValue(order, Map.class));
@@ -53,16 +64,29 @@ public class AWSElasticSearchService {
         }
     }
 
-    public void createSubmissionIndex() {
-        List<Submission> subList = new ArrayList<Submission>();
-        for (int i = 0; i < 100; i++) {
+
+
+    public void createRecipeIndex() {
+        try {
+            Recipes orders = Util.getRecipes();
+            recipeRepo.saveAll(orders.getRecipes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createSubmissionIndex(int numSubmissions) {
+        if (numSubmissions <= 0)
+            throw new IllegalArgumentException();
+        List<Submission> subList = new ArrayList<>();
+        for (int i = 0; i < numSubmissions; i++) {
             Submission submission = RandomPoJoGenerator.getObject(Submission.class);
             subList.add(submission);
         }
         buildIndexUsingBulkUpload(subList);
     }
 
-    public void buildIndexUsingBulkUpload(List<Submission> submissions) {
+    void buildIndexUsingBulkUpload(List<Submission> submissions) {
 
         log.info("Total # of submission objects: {}", submissions.size());
         try {
