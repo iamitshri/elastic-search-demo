@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -23,19 +22,18 @@ public class Recipe {
     @Field(type = FieldType.Keyword)
     String title;
 
-    @Field(type = FieldType.Auto)
+    @Field(type = FieldType.Text)
     String description;
 
     @Field(type = FieldType.Integer)
     Integer preparation_time_minutes;
 
-    @Field(type = FieldType.Nested, includeInParent = true)
+    @Field(type = FieldType.Auto)
     List<String> steps;
 
     @Field(type = FieldType.Nested, includeInParent = true)
     Serving servings;
 
-    @JsonInclude
     @Field(type = FieldType.Nested, includeInParent = true)
     List<Ingredient> ingredients;
 

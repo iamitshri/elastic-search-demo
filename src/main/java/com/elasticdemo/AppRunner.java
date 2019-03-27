@@ -14,11 +14,10 @@ public class AppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        service.createRecipeIndex();
+        service.createRecipeIndexRestClient();
+      //  service.createOrdersIndex();
         
-        service.createOrdersIndex();
-        
-        service.createSubmissionIndex(100);
+     //   service.createSubmissionIndex(100);
     }
 
 }

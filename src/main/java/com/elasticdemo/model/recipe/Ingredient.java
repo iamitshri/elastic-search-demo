@@ -18,10 +18,10 @@ import lombok.experimental.FieldDefaults;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Ingredient {
     
-    @Field(type = FieldType.Auto)
+    @Field(type = FieldType.Keyword)
     String name;
     
-    @Field(type = FieldType.Auto)
+    @Field(type = FieldType.Keyword)
     String quantity;
 
 }

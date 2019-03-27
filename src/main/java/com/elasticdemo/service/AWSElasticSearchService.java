@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.elasticdemo.model.order.Order;
 import com.elasticdemo.model.order.Orders;
+import com.elasticdemo.model.recipe.Recipe;
 import com.elasticdemo.model.recipe.RecipeElasticRepository;
 import com.elasticdemo.model.recipe.Recipes;
 import com.elasticdemo.model.submission.Submission;
@@ -65,6 +66,24 @@ public class AWSElasticSearchService {
     }
 
 
+    public void createRecipeIndexRestClient() {
+        BulkRequest bulkRequest = new BulkRequest();
+        try {
+
+            Recipes recipes = Util.getRecipes();
+            int cnt = 0;
+            for (Recipe order : recipes.getRecipes()) {
+                cnt++;
+                IndexRequest request = new IndexRequest("recipelist", "recipelist", "" + cnt);
+                request.source(mapper.convertValue(order, Map.class));
+                bulkRequest.add(request);
+            }
+            BulkResponse result = restClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+            log.debug(result.buildFailureMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void createRecipeIndex() {
         try {
